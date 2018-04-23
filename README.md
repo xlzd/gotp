@@ -1,2 +1,1 @@
-# gotp
-Golang One-Time Password Library.
+# GOTP - The Golang One-Time Password Library
