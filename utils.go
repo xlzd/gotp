@@ -39,7 +39,7 @@ func BuildUri(otpType, secret, accountName, issuerName, algorithm string, initia
 	urlParams := make([]string, 0)
 	urlParams = append(urlParams, "secret="+secret)
 	if otpType == OtpTypeHotp {
-		urlParams = append(urlParams, "counter="+string(initialCount))
+		urlParams = append(urlParams, fmt.Sprintf("counter=%d", initialCount))
 	}
 	label := url.QueryEscape(accountName)
 	if issuerName != "" {
@@ -51,10 +51,10 @@ func BuildUri(otpType, secret, accountName, issuerName, algorithm string, initia
 		urlParams = append(urlParams, "algorithm="+strings.ToUpper(algorithm))
 	}
 	if digits != 0 && digits != 6 {
-		urlParams = append(urlParams, "digits="+string(digits))
+		urlParams = append(urlParams, fmt.Sprintf("digits=%d", digits))
 	}
 	if period != 0 && period != 30 {
-		urlParams = append(urlParams, "period="+string(period))
+		urlParams = append(urlParams, fmt.Sprintf("period=%d", period))
 	}
 	return fmt.Sprintf("otpauth://%s/%s?%s", otpType, label, strings.Join(urlParams, "&"))
 }
