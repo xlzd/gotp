@@ -2,6 +2,7 @@ package gotp
 
 import (
 	"crypto/hmac"
+	"crypto/sha1"
 	"encoding/base32"
 	"fmt"
 	"hash"
@@ -9,19 +10,28 @@ import (
 	"strings"
 )
 
-type OTP struct {
-	secret string   // secret in base32 format
-	digits int      // number of integers in the OTP. Some apps expect this to be 6 digits, others support more.
-	digest hashFunc // digest function to use in the HMAC (expected to be sha1)
+type Hasher struct {
+	HashName string
+	Digest   func() hash.Hash
 }
 
-type hashFunc = func() hash.Hash
+type OTP struct {
+	secret string  // secret in base32 format
+	digits int     // number of integers in the OTP. Some apps expect this to be 6 digits, others support more.
+	hasher *Hasher // digest function to use in the HMAC (expected to be sha1)
+}
 
-func NewOTP(secret string, digits int, digest hashFunc) OTP {
+func NewOTP(secret string, digits int, hasher *Hasher) OTP {
+	if hasher == nil {
+		hasher = &Hasher{
+			HashName: "sha1",
+			Digest:   sha1.New,
+		}
+	}
 	return OTP{
 		secret: secret,
 		digits: digits,
-		digest: digest,
+		hasher: hasher,
 	}
 }
 
@@ -33,7 +43,7 @@ func (o *OTP) generateOTP(input int) string {
 	if input < 0 {
 		panic("input must be positive integer")
 	}
-	hasher := hmac.New(o.digest, o.byteSecret())
+	hasher := hmac.New(o.hasher.Digest, o.byteSecret())
 	hasher.Write(Itob(input))
 	hmacHash := hasher.Sum(nil)
 
