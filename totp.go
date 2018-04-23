@@ -44,16 +44,16 @@ See also:
     https://github.com/google/google-authenticator/wiki/Key-Uri-Format
 
 params:
-    name:       name of the account
-    issuerName: the name of the OTP issuer; this will be the organization title of the OTP entry in Authenticator
+    accountName: name of the account
+    issuerName:  the name of the OTP issuer; this will be the organization title of the OTP entry in Authenticator
 
 returns: provisioning URI
 */
-func (t *TOTP) ProvisioningUri(name, issuerName string) string {
+func (t *TOTP) ProvisioningUri(accountName, issuerName string) string {
 	return BuildUri(
 		OtpTypeTotp,
 		t.secret,
-		name,
+		accountName,
 		issuerName,
 		t.hasher.HashName,
 		0,
