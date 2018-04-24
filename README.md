@@ -89,7 +89,7 @@ func main() {
 }
 ```
 
-# License
+## License
 
 GOTP is licensed under the [MIT License][License]
 
