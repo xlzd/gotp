@@ -23,8 +23,8 @@ Check API docs at https://godoc.org/github.com/xlzd/gotp
 
 ```Go
 totp := gotp.NewDefaultTOTP("4S62BZNFXXSZLCRO")
-otp.Now()  // current otp '123456'
-otp.At(1524486261)  // otp of timestamp 1524486261 '123456'
+totp.Now()  // current otp '123456'
+totp.At(1524486261)  // otp of timestamp 1524486261 '123456'
 
 # OTP verified for a given timestamp
 totp.Verify('492039', 1524486261)  // true
