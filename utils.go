@@ -75,6 +75,7 @@ func Itob(integer int) []byte {
 	return byteArr
 }
 
+// generate a random secret of given length
 func RandomSecret(length int) string {
 	rand.Seed(time.Now().UnixNano())
 	letterRunes := []rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ234567")
