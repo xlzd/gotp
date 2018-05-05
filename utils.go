@@ -2,6 +2,7 @@ package gotp
 
 import (
 	"fmt"
+	"math/rand"
 	"net/url"
 	"strings"
 	"time"
@@ -72,4 +73,17 @@ func Itob(integer int) []byte {
 		integer = integer >> 8
 	}
 	return byteArr
+}
+
+func RandomSecret(length int) string {
+	rand.Seed(time.Now().UnixNano())
+	letterRunes := []rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ234567")
+
+	bytes := make([]rune, length)
+
+	for i := range bytes {
+		bytes[i] = letterRunes[rand.Intn(len(letterRunes))]
+	}
+
+	return string(bytes)
 }

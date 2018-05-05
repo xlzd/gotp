@@ -51,6 +51,13 @@ hotp.ProvisioningUri("demoAccountName", "issuerName", 1)
 // otpauth://hotp/issuerName:demoAccountName?secret=4S62BZNFXXSZLCRO&counter=1&issuer=issuerName
 ```
 
+### Generate random secret
+
+```Go
+secretLength := 16
+gotp.RandomSecret(secretLength) // LMT4URYNZKEWZRAA
+```
+
 ### Google Authenticator Compatible
 
 GOTP works with the Google Authenticator iPhone and Android app, as well as other OTP apps like Authy.
