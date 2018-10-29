@@ -12,6 +12,17 @@ func TestTOTP_At(t *testing.T) {
 	}
 }
 
+func TestTOTP_NowWithExpiration(t *testing.T) {
+	otp, exp := totp.NowWithExpiration()
+	cts := currentTimestamp()
+	if otp != totp.Now() {
+		t.Error("TOTP generate otp error!")
+	}
+	if totp.At(cts+30) != totp.At(int(exp)) {
+		t.Error("TOTP expiration otp error!")
+	}
+}
+
 func TestTOTP_Verify(t *testing.T) {
 	if !totp.Verify("179394", 1524485781) {
 		t.Error("verify faild")
