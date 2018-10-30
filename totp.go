@@ -1,5 +1,7 @@
 package gotp
 
+import "time"
+
 // time-based OTP counters.
 type TOTP struct {
 	OTP
@@ -23,6 +25,14 @@ func (t *TOTP) At(timestamp int) string {
 // Generate the current time OTP
 func (t *TOTP) Now() string {
 	return t.At(currentTimestamp())
+}
+
+// Generate the current time OTP and expiration time
+func (t *TOTP) NowWithExpiration() (string, int64) {
+	interval64 := int64(t.interval)
+	timeCodeInt64 := time.Now().Unix() / interval64
+	expirationTime := (timeCodeInt64 + 1) * interval64
+	return t.generateOTP(int(timeCodeInt64)), expirationTime
 }
 
 /*
