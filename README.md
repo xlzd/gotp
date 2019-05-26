@@ -4,20 +4,19 @@
 
 GOTP is a Golang package for generating and verifying one-time passwords. It can be used to implement two-factor (2FA) or multi-factor (MFA) authentication methods in anywhere that requires users to log in.
 
-Open MFA standards are defined in [RFC 4226][RFC 4226] (HOTP: An HMAC-Based One-Time Password Algorithm) and in [RFC 6238][RFC 6238] (TOTP: Time-Based One-Time Password Algorithm). GOTP implements server-side support for both of these standards.
+Open MFA standards are defined in [RFC 4226][rfc 4226] (HOTP: An HMAC-Based One-Time Password Algorithm) and in [RFC 6238][rfc 6238] (TOTP: Time-Based One-Time Password Algorithm). GOTP implements server-side support for both of these standards.
 
-GOTP was inspired by [PyOTP][PyOTP].
+GOTP was inspired by [PyOTP][pyotp].
 
+This fork provides the functionality to produce OTPs with a hexadecimal output format.
 
 ## Installation
 
 ```
-$ go get github.com/xlzd/gotp
+$ go get github.com/diebietse/gotp
 ```
 
 ## Usage
-
-Check API docs at https://godoc.org/github.com/xlzd/gotp
 
 ### Time-based OTPs
 
@@ -49,6 +48,18 @@ hotp.Verify('944181', 1)  // false
 // generate a provisioning uri
 hotp.ProvisioningUri("demoAccountName", "issuerName", 1)
 // otpauth://hotp/issuerName:demoAccountName?secret=4S62BZNFXXSZLCRO&counter=1&issuer=issuerName
+```
+
+### Hex HOTP Output Example
+
+```Go
+hotp := NewHOTP("4S62BZNFXXSZLCRO", 6, nil, FormatHex)
+hotp.At(0)  // '0e6835'
+hotp.At(1)  // '0bc39f'
+
+# OTP verified for a given timestamp
+hotp.Verify('0e6835', 0)  // true
+hotp.Verify('0e6835', 1)  // false
 ```
 
 ### Generate random secret
@@ -88,7 +99,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/xlzd/gotp"
+	"github.com/diebietse/gotp"
 )
 
 func main() {
@@ -98,12 +109,11 @@ func main() {
 
 ## License
 
-GOTP is licensed under the [MIT License][License]
+GOTP is licensed under the [MIT License][license]
 
-
-[build-status]: https://travis-ci.org/xlzd/gotp.svg?branch=master
-[license-badge]:   https://img.shields.io/badge/license-MIT-000000.svg
-[RFC 4226]: https://tools.ietf.org/html/rfc4226 "RFC 4226"
-[RFC 6238]: https://tools.ietf.org/html/rfc6238 "RFC 6238"
-[PyOTP]: https://github.com/pyotp/pyotp
-[License]: https://github.com/xlzd/gotp/blob/master/LICENSE
+[build-status]: https://travis-ci.org/diebietse/gotp.svg?branch=master
+[license-badge]: https://img.shields.io/badge/license-MIT-000000.svg
+[rfc 4226]: https://tools.ietf.org/html/rfc4226 "RFC 4226"
+[rfc 6238]: https://tools.ietf.org/html/rfc6238 "RFC 6238"
+[pyotp]: https://github.com/pyotp/pyotp
+[license]: https://github.com/diebietse/gotp/blob/master/LICENSE

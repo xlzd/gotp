@@ -18,3 +18,11 @@ func TestHOTP_Verify(t *testing.T) {
 		t.Error("verify faild")
 	}
 }
+
+func TestHOTP_Hex(t *testing.T) {
+	otpHex := NewHOTP("4S62BZNFXXSZLCRO", 6, nil, FormatHex)
+	otp := otpHex.At(12345)
+	if "02f5d1" != otp {
+		t.Errorf("HOTP generate otp error: %v", otp)
+	}
+}

@@ -5,14 +5,14 @@ type HOTP struct {
 	OTP
 }
 
-func NewHOTP(secret string, digits int, hasher *Hasher) *HOTP {
-	otp := NewOTP(secret, digits, hasher)
+func NewHOTP(secret string, digits int, hasher *Hasher, format Format) *HOTP {
+	otp := NewOTP(secret, digits, hasher, format)
 	return &HOTP{OTP: otp}
 
 }
 
 func NewDefaultHOTP(secret string) *HOTP {
-	return NewHOTP(secret, 6, nil)
+	return NewHOTP(secret, 6, nil, FormatDec)
 }
 
 // Generates the OTP for the given count.
