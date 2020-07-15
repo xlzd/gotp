@@ -13,6 +13,22 @@ const (
 	OtpTypeHotp = "hotp"
 )
 
+var (
+	// slices of possible runes for secret creation.
+	digitRunes   = []rune("0123456789")
+	lCaseRunes   = []rune("abcdefghijklmnopqrstuvwxyz")
+	uCaseRunes   = []rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	specialRunes = []rune("~=+%^*/()[]{}/!@#$?|")
+
+	// A collection of all runes which may be used in creating a new secret.
+	allRunes = [][]rune{
+		digitRunes,
+		lCaseRunes,
+		uCaseRunes,
+		specialRunes,
+	}
+)
+
 /*
 Returns the provisioning URI for the OTP; works for either TOTP or HOTP.
 This can then be encoded in a QR Code and used to provision the Google Authenticator app.
@@ -77,13 +93,18 @@ func Itob(integer int) []byte {
 
 // generate a random secret of given length
 func RandomSecret(length int) string {
+	// secretRunes is all runes which may be used in a valid RandomSecret.
+	secretRunes := []rune{}
+	for _, r := range allRunes {
+		secretRunes = append(secretRunes, r...)
+	}
+
 	rand.Seed(time.Now().UnixNano())
-	letterRunes := []rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ234567")
 
 	bytes := make([]rune, length)
 
 	for i := range bytes {
-		bytes[i] = letterRunes[rand.Intn(len(letterRunes))]
+		bytes[i] = secretRunes[rand.Intn(len(secretRunes))]
 	}
 
 	return string(bytes)
