@@ -30,7 +30,7 @@ var (
 )
 
 /*
-Returns the provisioning URI for the OTP; works for either TOTP or HOTP.
+BuildUri returns the provisioning URI for the OTP; works for either TOTP or HOTP.
 This can then be encoded in a QR Code and used to provision the Google Authenticator app.
 For module-internal use.
 See also:
@@ -76,12 +76,12 @@ func BuildUri(otpType, secret, accountName, issuerName, algorithm string, initia
 	return fmt.Sprintf("otpauth://%s/%s?%s", otpType, label, strings.Join(urlParams, "&"))
 }
 
-// get current timestamp
+// currentTimestamp returns the current timestamp.
 func currentTimestamp() int {
 	return int(time.Now().Unix())
 }
 
-// integer to byte array
+// Itob converts an integer to byte array
 func Itob(integer int) []byte {
 	byteArr := make([]byte, 8)
 	for i := 7; i >= 0; i-- {
