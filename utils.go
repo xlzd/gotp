@@ -91,7 +91,7 @@ func Itob(integer int) []byte {
 	return byteArr
 }
 
-// generate a random secret of given length
+// RandomSecret generates a random secret of given length from all possible printable ASCII characters.
 func RandomSecret(length int) string {
 	// secretRunes is all runes which may be used in a valid RandomSecret.
 	secretRunes := []rune{}
@@ -108,4 +108,9 @@ func RandomSecret(length int) string {
 	}
 
 	return string(bytes)
+}
+
+// UrlSafeRandomSecret generates a RandomSecret and returns it with url-safe encoding.
+func UrlSafeRandomSecret(l int) string {
+	return url.QueryEscape(RandomSecret(l))
 }
