@@ -1,6 +1,7 @@
 package gotp
 
 import (
+	"encoding/base32"
 	"fmt"
 	"math/rand"
 	"net/url"
@@ -107,7 +108,7 @@ func RandomSecret(length int) string {
 		bytes[i] = secretRunes[rand.Intn(len(secretRunes))]
 	}
 
-	return string(bytes)
+	return base32.StdEncoding.EncodeToString(bytes)
 }
 
 // UrlSafeRandomSecret generates a RandomSecret and returns it with url-safe encoding.
