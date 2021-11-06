@@ -8,19 +8,26 @@ type TOTP struct {
 	interval int
 }
 
-var otpDigit = 6
+var (
+	otpDigit          = 6
+	otpExpireInterval = 5
+)
 
 func SetOtpDigit(digit int) {
 	otpDigit = digit
 }
 
-func NewTOTP(secret string, interval int, hasher *Hasher) *TOTP {
+func SetOtpExpireInterval(second int) {
+	otpExpireInterval = second
+}
+
+func NewTOTP(secret string, hasher *Hasher) *TOTP {
 	otp := NewOTP(secret, otpDigit, hasher)
-	return &TOTP{OTP: otp, interval: interval}
+	return &TOTP{OTP: otp, interval: otpExpireInterval}
 }
 
 func NewDefaultTOTP(secret string) *TOTP {
-	return NewTOTP(secret, 30, nil)
+	return NewTOTP(secret, nil)
 }
 
 // Generate time OTP of given timestamp

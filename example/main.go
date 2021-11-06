@@ -14,6 +14,7 @@ func main() {
 
 func defaultTOTPUsage() {
 	gotp.SetOtpDigit(7)
+	gotp.SetOtpExpireInterval(60)
 	otp := gotp.NewDefaultTOTP("4S62BZNFXXSZLCRO")
 
 	fmt.Println("current one-time password is:", otp.Now())
