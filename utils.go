@@ -2,7 +2,7 @@ package gotp
 
 import (
 	"fmt"
-	"math/rand"
+	"crypto/rand"
 	"net/url"
 	"strings"
 	"time"
@@ -77,14 +77,11 @@ func Itob(integer int) []byte {
 
 // generate a random secret of given length
 func RandomSecret(length int) string {
-	rand.Seed(time.Now().UnixNano())
-	letterRunes := []rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ234567")
-
-	bytes := make([]rune, length)
-
-	for i := range bytes {
-		bytes[i] = letterRunes[rand.Intn(len(letterRunes))]
+	s := make([]byte, length*10)
+	_, err := rand.Read(s)
+	if err != nil {
+		log.Println("Unable to generate secret; insufficient entropy?",err)
+		return ""
 	}
-
-	return string(bytes)
+	return hex.EncodeToString(s[:length])
 }
