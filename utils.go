@@ -2,7 +2,8 @@ package gotp
 
 import (
 	"fmt"
-	"math/rand"
+	"crypto/rand"
+	"encoding/base32"
 	"net/url"
 	"strings"
 	"time"
@@ -75,16 +76,17 @@ func Itob(integer int) []byte {
 	return byteArr
 }
 
-// generate a random secret of given length
+// generate a random secret of given length (number of bytes)
+// returns empty string if something bad happened
 func RandomSecret(length int) string {
-	rand.Seed(time.Now().UnixNano())
-	letterRunes := []rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ234567")
-
-	bytes := make([]rune, length)
-
-	for i := range bytes {
-		bytes[i] = letterRunes[rand.Intn(len(letterRunes))]
+	var result string
+	secret := make([]byte, length)
+	gen, err := rand.Read(secret)
+	if err != nil || gen != length {
+		// error reading random, return empty string
+		return result
 	}
-
-	return string(bytes)
+	var encoder = base32.StdEncoding.WithPadding(base32.NoPadding)
+	result = encoder.EncodeToString(secret)
+	return result
 }
