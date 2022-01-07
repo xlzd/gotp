@@ -28,3 +28,10 @@ func TestITob(t *testing.T) {
 		t.Error("ITob error")
 	}
 }
+
+func TestRandomSecret(t *testing.T) {
+	secret := RandomSecret(64)
+	if len(secret) == 0 {
+		t.Error("RandomSecret error")
+	}
+}
