@@ -34,31 +34,36 @@ params:
 returns: provisioning uri
 */
 func BuildUri(otpType, secret, accountName, issuerName, algorithm string, initialCount, digits, period int) string {
+	q := url.Values{}
+
 	if otpType != OtpTypeHotp && otpType != OtpTypeTotp {
 		panic("otp type error, got " + otpType)
 	}
-
-	urlParams := make([]string, 0)
-	urlParams = append(urlParams, "secret="+secret)
-	if otpType == OtpTypeHotp {
-		urlParams = append(urlParams, fmt.Sprintf("counter=%d", initialCount))
-	}
 	label := url.QueryEscape(accountName)
 	if issuerName != "" {
-		issuerNameEscape := url.QueryEscape(issuerName)
-		label = issuerNameEscape + ":" + label
-		urlParams = append(urlParams, "issuer="+issuerNameEscape)
+		label = url.QueryEscape(issuerName) + ":" + label
+		q.Set("issuer", issuerName)
 	}
+	q.Set("secret", secret)
 	if algorithm != "" && algorithm != "sha1" {
-		urlParams = append(urlParams, "algorithm="+strings.ToUpper(algorithm))
+		q.Set("algorithm", strings.ToUpper(algorithm))
 	}
 	if digits != 0 && digits != 6 {
-		urlParams = append(urlParams, fmt.Sprintf("digits=%d", digits))
+		q.Set("digits", fmt.Sprintf("%d", digits))
 	}
 	if period != 0 && period != 30 {
-		urlParams = append(urlParams, fmt.Sprintf("period=%d", period))
+		q.Set("period", fmt.Sprintf("%d", period))
 	}
-	return fmt.Sprintf("otpauth://%s/%s?%s", otpType, label, strings.Join(urlParams, "&"))
+	if otpType == OtpTypeHotp {
+		q.Set("counter", fmt.Sprintf("%d", initialCount))
+	}
+	u := url.URL {
+		Scheme: "otpauth",
+		Host: otpType,
+		Path: label,
+		RawQuery: q.Encode(),
+	}
+	return u.String()
 }
 
 // get current timestamp
