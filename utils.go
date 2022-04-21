@@ -1,9 +1,9 @@
 package gotp
 
 import (
-	"fmt"
 	"crypto/rand"
 	"encoding/base32"
+	"fmt"
 	"net/url"
 	"strings"
 	"time"
@@ -57,10 +57,10 @@ func BuildUri(otpType, secret, accountName, issuerName, algorithm string, initia
 	if otpType == OtpTypeHotp {
 		q.Set("counter", fmt.Sprintf("%d", initialCount))
 	}
-	u := url.URL {
-		Scheme: "otpauth",
-		Host: otpType,
-		Path: label,
+	u := url.URL{
+		Scheme:   "otpauth",
+		Host:     otpType,
+		Path:     label,
 		RawQuery: q.Encode(),
 	}
 	return u.String()
@@ -68,7 +68,7 @@ func BuildUri(otpType, secret, accountName, issuerName, algorithm string, initia
 
 // get current timestamp
 func currentTimestamp() int {
-	return int(time.Now().Unix())
+	return int(time.Now().UTC().Unix())
 }
 
 // integer to byte array
