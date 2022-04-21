@@ -20,6 +20,16 @@ func (t *TOTP) At(timestamp int) string {
 	return t.generateOTP(t.timecode(timestamp))
 }
 
+// set the interval time OTP, default is 30s
+func (t *TOTP) SetExpiration(expired int) {
+	t.interval = expired
+}
+
+// set the digits length of time OTP, default is 6
+func (t *TOTP) SetDigitsLength(len int) {
+	t.digits = len
+}
+
 // Generate the current time OTP
 func (t *TOTP) Now() string {
 	return t.At(currentTimestamp())

@@ -20,6 +20,11 @@ func (h *HOTP) At(count int) string {
 	return h.generateOTP(count)
 }
 
+// set the digits length of hmac OTP, default is 6
+func (t *HOTP) SetDigitsLength(len int) {
+	t.digits = len
+}
+
 /*
 Verify OTP.
 
