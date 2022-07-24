@@ -42,7 +42,7 @@ hotp := gotp.NewDefaultHOTP("4S62BZNFXXSZLCRO")
 hotp.At(0)  // '944181'
 hotp.At(1)  // '770975'
 
-# OTP verified for a given timestamp
+// OTP verified for a given timestamp
 hotp.Verify('944181', 0)  // true
 hotp.Verify('944181', 1)  // false
 
