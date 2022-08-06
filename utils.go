@@ -1,9 +1,9 @@
 package gotp
 
 import (
-	"fmt"
 	"crypto/rand"
 	"encoding/base32"
+	"fmt"
 	"net/url"
 	"strings"
 	"time"
@@ -39,10 +39,10 @@ func BuildUri(otpType, secret, accountName, issuerName, algorithm string, initia
 	if otpType != OtpTypeHotp && otpType != OtpTypeTotp {
 		panic("otp type error, got " + otpType)
 	}
-	label := url.QueryEscape(accountName)
+	label := url.PathEscape(accountName)
 	if issuerName != "" {
-		label = url.QueryEscape(issuerName) + ":" + label
-		q.Set("issuer", issuerName)
+		label = url.PathEscape(issuerName) + ":" + label
+		q.Set("issuer", url.QueryEscape(issuerName))
 	}
 	q.Set("secret", secret)
 	if algorithm != "" && algorithm != "sha1" {
@@ -57,10 +57,10 @@ func BuildUri(otpType, secret, accountName, issuerName, algorithm string, initia
 	if otpType == OtpTypeHotp {
 		q.Set("counter", fmt.Sprintf("%d", initialCount))
 	}
-	u := url.URL {
-		Scheme: "otpauth",
-		Host: otpType,
-		Path: label,
+	u := url.URL{
+		Scheme:   "otpauth",
+		Host:     otpType,
+		Path:     label,
 		RawQuery: q.Encode(),
 	}
 	return u.String()
