@@ -18,7 +18,7 @@ func TestTOTP_NowWithExpiration(t *testing.T) {
 	if otp != totp.Now() {
 		t.Error("TOTP generate otp error!")
 	}
-	if totp.At(cts+30) != totp.At(int(exp)) {
+	if totp.At(cts+30) != totp.At(exp) {
 		t.Error("TOTP expiration otp error!")
 	}
 }

@@ -33,7 +33,7 @@ params:
 
 returns: provisioning uri
 */
-func BuildUri(otpType, secret, accountName, issuerName, algorithm string, initialCount, digits, period int) string {
+func BuildUri(otpType, secret, accountName, issuerName, algorithm string, initialCount, digits int, period int64) string {
 	q := url.Values{}
 
 	if otpType != OtpTypeHotp && otpType != OtpTypeTotp {
@@ -67,12 +67,12 @@ func BuildUri(otpType, secret, accountName, issuerName, algorithm string, initia
 }
 
 // get current timestamp
-func currentTimestamp() int {
-	return int(time.Now().Unix())
+func currentTimestamp() int64 {
+	return time.Now().Unix()
 }
 
 // integer to byte array
-func Itob(integer int) []byte {
+func Itob(integer int64) []byte {
 	byteArr := make([]byte, 8)
 	for i := 7; i >= 0; i-- {
 		byteArr[i] = byte(integer & 0xff)

@@ -36,7 +36,7 @@ func TestBuildUri(t *testing.T) {
 }
 
 func TestITob(t *testing.T) {
-	i := 1524486261
+	var i int64 = 1524486261
 	expect := []byte{0, 0, 0, 0, 90, 221, 208, 117}
 
 	if string(expect) != string(Itob(i)) {

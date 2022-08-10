@@ -17,7 +17,7 @@ func NewDefaultHOTP(secret string) *HOTP {
 
 // Generates the OTP for the given count.
 func (h *HOTP) At(count int) string {
-	return h.generateOTP(count)
+	return h.generateOTP(int64(count))
 }
 
 /*
