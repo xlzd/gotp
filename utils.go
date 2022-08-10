@@ -95,3 +95,13 @@ func RandomSecret(length int) string {
 	result = encoder.EncodeToString(secret)
 	return result
 }
+
+// A non-panic way of seeing weather or not a given secret is valid
+func IsSecretValid(secret string) bool {
+	missingPadding := len(secret) % 8
+	if missingPadding != 0 {
+		secret = secret + strings.Repeat("=", 8-missingPadding)
+	}
+	_, err := base32.StdEncoding.DecodeString(secret)
+	return err == nil
+}

@@ -50,3 +50,14 @@ func TestRandomSecret(t *testing.T) {
 		t.Error("RandomSecret error")
 	}
 }
+
+func TestIsSecretValid(t *testing.T) {
+	valid := RandomSecret(64)
+	if !IsSecretValid(valid) {
+		t.Error("IsSecretValid error - RandomSecret(64) is not valid")
+	}
+	invalid := "asdsada"
+	if IsSecretValid(invalid) {
+		t.Error("IsSecretValid error - Bad secret is valid")
+	}
+}
