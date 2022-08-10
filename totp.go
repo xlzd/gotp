@@ -22,6 +22,10 @@ func (t *TOTP) At(timestamp int64) string {
 	return t.generateOTP(t.timecode(timestamp))
 }
 
+func (t *TOTP) AtTime(timestamp time.Time) string {
+	return t.At(timestamp.Unix())
+}
+
 // Generate the current time OTP
 func (t *TOTP) Now() string {
 	return t.At(currentTimestamp())

@@ -2,6 +2,7 @@ package gotp
 
 import (
 	"testing"
+	"time"
 )
 
 var totp = NewDefaultTOTP("4S62BZNFXXSZLCRO")
@@ -9,6 +10,12 @@ var totp = NewDefaultTOTP("4S62BZNFXXSZLCRO")
 func TestTOTP_At(t *testing.T) {
 	if totp.Now() != totp.At(currentTimestamp()) {
 		t.Error("TOTP generate otp error!")
+	}
+}
+
+func TestTOTP_AtTime(t *testing.T) {
+	if totp.Now() != totp.AtTime(time.Now()) {
+		t.Error("TOTP at time generate otp error!")
 	}
 }
 
