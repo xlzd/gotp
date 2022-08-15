@@ -5,10 +5,10 @@ import "time"
 // time-based OTP counters.
 type TOTP struct {
 	OTP
-	interval int64
+	interval int
 }
 
-func NewTOTP(secret string, digits int, interval int64, hasher *Hasher) *TOTP {
+func NewTOTP(secret string, digits, interval int, hasher *Hasher) *TOTP {
 	otp := NewOTP(secret, digits, hasher)
 	return &TOTP{OTP: otp, interval: interval}
 }
@@ -80,5 +80,5 @@ func (t *TOTP) ProvisioningUri(accountName, issuerName string) string {
 }
 
 func (t *TOTP) timecode(timestamp int64) int64 {
-	return int64(timestamp / t.interval)
+	return timestamp / int64(t.interval)
 }

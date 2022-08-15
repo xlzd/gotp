@@ -33,7 +33,7 @@ params:
 
 returns: provisioning uri
 */
-func BuildUri(otpType, secret, accountName, issuerName, algorithm string, initialCount, digits int, period int64) string {
+func BuildUri(otpType, secret, accountName, issuerName, algorithm string, initialCount, digits int, period int) string {
 	q := url.Values{}
 
 	if otpType != OtpTypeHotp && otpType != OtpTypeTotp {
