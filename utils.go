@@ -33,7 +33,7 @@ params:
 
 returns: provisioning uri
 */
-func BuildUri(otpType, secret, accountName, issuerName, algorithm string, initialCount, digits, period int) string {
+func BuildUri(otpType, secret, accountName, issuerName, algorithm string, initialCount, digits int, period int) string {
 	q := url.Values{}
 
 	if otpType != OtpTypeHotp && otpType != OtpTypeTotp {
@@ -67,12 +67,12 @@ func BuildUri(otpType, secret, accountName, issuerName, algorithm string, initia
 }
 
 // get current timestamp
-func currentTimestamp() int {
-	return int(time.Now().Unix())
+func currentTimestamp() int64 {
+	return time.Now().Unix()
 }
 
 // integer to byte array
-func Itob(integer int) []byte {
+func Itob(integer int64) []byte {
 	byteArr := make([]byte, 8)
 	for i := 7; i >= 0; i-- {
 		byteArr[i] = byte(integer & 0xff)
@@ -94,4 +94,14 @@ func RandomSecret(length int) string {
 	var encoder = base32.StdEncoding.WithPadding(base32.NoPadding)
 	result = encoder.EncodeToString(secret)
 	return result
+}
+
+// A non-panic way of seeing weather or not a given secret is valid
+func IsSecretValid(secret string) bool {
+	missingPadding := len(secret) % 8
+	if missingPadding != 0 {
+		secret = secret + strings.Repeat("=", 8-missingPadding)
+	}
+	_, err := base32.StdEncoding.DecodeString(secret)
+	return err == nil
 }

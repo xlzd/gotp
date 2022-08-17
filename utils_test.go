@@ -36,7 +36,7 @@ func TestBuildUri(t *testing.T) {
 }
 
 func TestITob(t *testing.T) {
-	i := 1524486261
+	var i int64 = 1524486261
 	expect := []byte{0, 0, 0, 0, 90, 221, 208, 117}
 
 	if string(expect) != string(Itob(i)) {
@@ -48,5 +48,16 @@ func TestRandomSecret(t *testing.T) {
 	secret := RandomSecret(64)
 	if len(secret) == 0 {
 		t.Error("RandomSecret error")
+	}
+}
+
+func TestIsSecretValid(t *testing.T) {
+	valid := RandomSecret(64)
+	if !IsSecretValid(valid) {
+		t.Error("IsSecretValid error - RandomSecret(64) is not valid")
+	}
+	invalid := "asdsada"
+	if IsSecretValid(invalid) {
+		t.Error("IsSecretValid error - Bad secret is valid")
 	}
 }

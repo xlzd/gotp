@@ -39,7 +39,7 @@ func NewOTP(secret string, digits int, hasher *Hasher) OTP {
 params
     input: the HMAC counter value to use as the OTP input. Usually either the counter, or the computed integer based on the Unix timestamp
 */
-func (o *OTP) generateOTP(input int) string {
+func (o *OTP) generateOTP(input int64) string {
 	if input < 0 {
 		panic("input must be positive integer")
 	}
